@@ -1,6 +1,4 @@
 
-@
-class/config.php,7\3\73c644f7171711e899001af6d7f735f881179af7
 =
 class/Sql.php,f\8\f80e3234e893b860254a585500fb330dd1943cf3
 >

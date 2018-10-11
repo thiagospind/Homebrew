@@ -136,7 +136,43 @@ class Lupulo{
 
     public function insertLupulo(){
         $sql = new Sql();
-        $result =
+        $sql->select("inset into lupulo (nomeLup, paisLup, tipoLup, AALup, safraLup, BALup, 
+        estilosLup, perfilAromaLup) values (:nomeLup, :paisLup, :tipoLup, :AALup, :safraLup, :BALup, :estilosLup, 
+        :perfilAromaLup)",array(
+            ":nomeLup"=>$this->getNomeLup(),
+            ":paisLup"=>$this->getPaisLup(),
+            ":tipoLup"=>$this->getTipoLup(),
+            ":AALup"=>$this->getAALup(),
+            ":safraLup"=>$this->getSafraLup(),
+            ":BALup"=>$this->getBALup(),
+            ":estilosLup"=>$this->getEstilosLup(),
+            ":perfilAromaLup"=>$this->getPerfilAromaLup()
+        ));
+    }
+
+    public function updateLupulo(){
+        $sql = new Sql();
+        $sql->select("update lupulo set nomeLup = :nomeLup, 
+        paisLup = :paisLup, tipoLup = :tipoLup, AALup = :AALup, safraLup = :safraLup, BALup = :BALup, 
+        estilosLup = :estilosLup, perfilAromaLup = :perfilAromaLup where idLup = :idLup)",array(
+            ":idLup"=>$this->getIdLup(),
+            ":nomeLup"=>$this->getNomeLup(),
+            ":paisLup"=>$this->getPaisLup(),
+            ":tipoLup"=>$this->getTipoLup(),
+            ":AALup"=>$this->getAALup(),
+            ":safraLup"=>$this->getSafraLup(),
+            ":BALup"=>$this->getBALup(),
+            ":estilosLup"=>$this->getEstilosLup(),
+            ":perfilAromaLup"=>$this->getPerfilAromaLup()
+        ));
+    }
+
+    public function deleteLupulo($id)
+    {
+        $sql = new Sql();
+        $sql->select("delete from lupulo where idLupulo = :id",array(
+            ":id"=>$id
+        ));
     }
 
     public function setDados($dados){
