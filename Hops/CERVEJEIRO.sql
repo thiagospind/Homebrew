@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.0.96-community-nt-log
+-- Server version	5.0.96-community-nt
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -61,19 +61,41 @@ CREATE TABLE `lupulo_oleo` (
   `idLupOleo` int(10) unsigned NOT NULL auto_increment,
   `idLup` int(10) unsigned NOT NULL,
   `idOleo` int(10) unsigned NOT NULL,
-  `quantOleo` decimal(3,2) NOT NULL,
+  `quantOleo` decimal(10,2) NOT NULL,
   PRIMARY KEY  (`idLupOleo`),
   KEY `FK_lupulo_oleo_idLup` (`idLup`),
   KEY `FK_lupulo_oleo_idOleo` (`idOleo`),
   CONSTRAINT `FK_lupulo_oleo_idLup` FOREIGN KEY (`idLup`) REFERENCES `lupulo` (`idLup`),
   CONSTRAINT `FK_lupulo_oleo_idOleo` FOREIGN KEY (`idOleo`) REFERENCES `oleo` (`idOleo`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lupulo_oleo`
 --
 
 /*!40000 ALTER TABLE `lupulo_oleo` DISABLE KEYS */;
+INSERT INTO `lupulo_oleo` (`idLupOleo`,`idLup`,`idOleo`,`quantOleo`) VALUES 
+ (1,1,3,'0.88'),
+ (2,1,2,'8.73'),
+ (3,1,4,'5.58'),
+ (4,1,5,'0.15'),
+ (5,1,6,'0.30'),
+ (6,1,7,'0.77'),
+ (7,1,1,'66.53'),
+ (8,2,1,'65.37'),
+ (9,2,2,'10.68'),
+ (10,2,3,'1.09'),
+ (11,2,4,'5.23'),
+ (12,2,5,'0.20'),
+ (13,2,6,'1.14'),
+ (14,2,7,'0.67'),
+ (15,3,1,'52.14'),
+ (16,3,2,'17.90'),
+ (17,3,3,'0.79'),
+ (18,3,4,'6.53'),
+ (19,3,5,'6.39'),
+ (20,3,6,'0.16'),
+ (21,3,7,'0.61');
 /*!40000 ALTER TABLE `lupulo_oleo` ENABLE KEYS */;
 
 
@@ -87,7 +109,7 @@ CREATE TABLE `oleo` (
   `nomeOleo` varchar(70) NOT NULL,
   `caracteristicaOleo` text NOT NULL,
   PRIMARY KEY  (`idOleo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `oleo`
@@ -96,7 +118,12 @@ CREATE TABLE `oleo` (
 /*!40000 ALTER TABLE `oleo` DISABLE KEYS */;
 INSERT INTO `oleo` (`idOleo`,`nomeOleo`,`caracteristicaOleo`) VALUES 
  (1,'Myrcene','Resina, pinho, herbal, picante, cítrico e floral.'),
- (2,'Humulene','Floral, herbal e condimentado.');
+ (2,'Humulene','Floral, herbal e condimentado.'),
+ (3,'B-Pinene','Picante, Pinho'),
+ (4,'Caryophyllene','Madeira'),
+ (5,'Farnesene','Floral'),
+ (6,'Geraniol','Floral, doce, rosa'),
+ (7,'Linalool','Floral, laranja');
 /*!40000 ALTER TABLE `oleo` ENABLE KEYS */;
 
 
