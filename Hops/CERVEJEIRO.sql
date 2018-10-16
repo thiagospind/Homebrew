@@ -104,7 +104,7 @@ CREATE TABLE `lupulo_oleo` (
   KEY `FK_lupulo_oleo_idOleo` (`idOleo`),
   CONSTRAINT `FK_lupulo_oleo_idLup` FOREIGN KEY (`idLup`) REFERENCES `lupulo` (`idLup`),
   CONSTRAINT `FK_lupulo_oleo_idOleo` FOREIGN KEY (`idOleo`) REFERENCES `oleo` (`idOleo`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lupulo_oleo`
@@ -137,7 +137,9 @@ INSERT INTO `lupulo_oleo` (`idLupOleo`,`idLup`,`idOleo`,`quantOleo`) VALUES
  (23,1,9,'0.89'),
  (24,1,10,'0.23'),
  (25,1,11,'0.86'),
- (26,1,12,'0.41');
+ (26,1,12,'0.41'),
+ (27,1,13,'0.44'),
+ (28,1,14,'0.63');
 /*!40000 ALTER TABLE `lupulo_oleo` ENABLE KEYS */;
 
 
@@ -151,7 +153,7 @@ CREATE TABLE `oleo` (
   `nomeOleo` varchar(70) NOT NULL,
   `caracteristicaOleo` text NOT NULL,
   PRIMARY KEY  (`idOleo`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `oleo`
@@ -172,7 +174,9 @@ INSERT INTO `oleo` (`idOleo`,`nomeOleo`,`caracteristicaOleo`) VALUES
  (11,'Citral','A'),
  (12,'Geranyl_Acet1','A'),
  (13,'Geranyl_Acet2','A'),
- (14,'Citronellol','A');
+ (14,'Citronellol','A'),
+ (15,'Nerol',' '),
+ (16,'Geraniol',' ');
 /*!40000 ALTER TABLE `oleo` ENABLE KEYS */;
 
 
@@ -199,6 +203,44 @@ INSERT INTO `tbproj_cenario` (`projCenProj_Id`,`projCenNome`,`valor`) VALUES
  (4,'Cenário III',5.00);
 /*!40000 ALTER TABLE `tbproj_cenario` ENABLE KEYS */;
 
+
+--
+-- Definition of procedure `SP_LUPOLEO`
+--
+
+DROP PROCEDURE IF EXISTS `SP_LUPOLEO`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_LUPOLEO`()
+BEGIN
+  DECLARE qsql1 varchar(10000);
+  -- SET @sql = NULL;
+  SELECT
+    GROUP_CONCAT(DISTINCT CONCAT('max(case when nomeOleo = "',nomeOleo,'" then quantOleo else 0 end) AS \'',nomeOleo, '\''
+      )
+    ) INTO qsql1
+
+  from lupulo_oleo LO
+  inner join lupulo L on LO.idlup = L.idlup
+  inner join oleo O on LO.idoleo = O.idoleo;
+
+  SET qsql1 := CONCAT('SELECT LO.idLup, L.nomeLup, ', qsql1, '
+                    from lupulo_oleo LO
+                    inner join lupulo L on LO.idlup = L.idlup
+                    inner join oleo O on LO.idoleo = O.idoleo
+                    GROUP BY LO.idlup');
+
+  SET @sql = qsql1;
+  PREPARE stmt FROM @sql;
+  EXECUTE stmt;
+  DEALLOCATE PREPARE stmt;
+  -- select qsql1;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
 
 --
 -- Definition of view `lupulo_oleo_ext`

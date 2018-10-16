@@ -1,0 +1,34 @@
+Tutorial para criação de SQL para transformar linhas em colunas:
+- Alterar no Mysql: max_allowed_packet=500M
+					group_concat_max_len=4096
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `cervejeiro`.`SP_LUPOLEO` $$
+CREATE PROCEDURE `cervejeiro`.`SP_LUPOLEO` ()
+BEGIN
+  DECLARE qsql1 varchar(10000);
+  -- SET @sql = NULL;
+  SELECT
+    GROUP_CONCAT(DISTINCT CONCAT('max(case when nomeOleo = "',nomeOleo,'" then quantOleo else 0 end) AS \'',nomeOleo, '\''
+      )
+    ) INTO qsql1
+
+  from lupulo_oleo LO
+  inner join lupulo L on LO.idlup = L.idlup
+  inner join oleo O on LO.idoleo = O.idoleo;
+
+  SET qsql1 := CONCAT('SELECT LO.idLup, L.nomeLup, ', qsql1, '
+                    from lupulo_oleo LO
+                    inner join lupulo L on LO.idlup = L.idlup
+                    inner join oleo O on LO.idoleo = O.idoleo
+                    GROUP BY LO.idlup');
+
+  SET @sql = qsql1;
+  PREPARE stmt FROM @sql;
+  EXECUTE stmt;
+  DEALLOCATE PREPARE stmt;
+  -- select qsql1;
+END $$
+
+DELIMITER ;
